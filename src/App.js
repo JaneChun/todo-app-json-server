@@ -5,29 +5,31 @@ import { Input } from './components/Input.js';
 import { TodoList } from './components/TodoList.js';
 import { CompletedCounter } from './components/CompletedCounter.js';
 import { Today } from './components/Today.js';
+import { useState } from 'react';
+
+const Body = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
+
+const AppContainer = styled.div`
+  width: 375px;
+  height: 812px;
+  border: 1px solid lightgray;
+  border-radius: 15px;
+`;
 
 function App() {
-  const Body = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  `;
-
-  const AppContainer = styled.div`
-    width: 375px;
-    height: 812px;
-    border: 1px solid lightgray;
-    border-radius: 15px;
-    /* background: skyblue; */
-  `;
+  const [todoList, setTodoList] = useState([]);
 
   return (
     <Body>
       <AppContainer>
         <Title />
-        <Input />
-        <TodoList />
+        <Input todoList={todoList} setTodoList={setTodoList} />
+        <TodoList todoList={todoList} />
         <CompletedCounter />
         <Today />
       </AppContainer>

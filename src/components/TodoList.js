@@ -1,20 +1,21 @@
 import styled from 'styled-components';
 import { Todo } from './Todo.js';
 import { dummydata } from '../dummydata';
+import { useState } from 'react';
 
-export function TodoList() {
-  const TodoContainer = styled.div`
-    height: 318px;
-    overflow-y: scroll;
-  `;
+const TodosContainer = styled.div`
+  height: 318px;
+  overflow-y: scroll;
+`;
 
+export function TodoList({ todoList }) {
   return (
-    <TodoContainer>
+    <TodosContainer>
       <ul>
-        {dummydata.map((data) => {
-          return <Todo data={data} />;
+        {todoList.map((data) => {
+          return <Todo key={Math.random()} data={data} />;
         })}
       </ul>
-    </TodoContainer>
+    </TodosContainer>
   );
 }
