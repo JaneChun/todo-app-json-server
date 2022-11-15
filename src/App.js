@@ -1,24 +1,37 @@
-import logo from './logo.svg';
 import './App.css';
+import styled from 'styled-components';
+import { Title } from './components/Title.js';
+import { Input } from './components/Input.js';
+import { TodoList } from './components/TodoList.js';
+import { CompletedCounter } from './components/CompletedCounter.js';
+import { Today } from './components/Today.js';
 
 function App() {
+  const Body = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  `;
+
+  const AppContainer = styled.div`
+    width: 375px;
+    height: 812px;
+    border: 1px solid lightgray;
+    border-radius: 15px;
+    /* background: skyblue; */
+  `;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Body>
+      <AppContainer>
+        <Title />
+        <Input />
+        <TodoList />
+        <CompletedCounter />
+        <Today />
+      </AppContainer>
+    </Body>
   );
 }
 
