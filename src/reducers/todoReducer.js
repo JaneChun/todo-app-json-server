@@ -1,4 +1,4 @@
-import { ADD_TODO, DELETE_TODO, CHECK_TODO } from '../actions/index';
+import { ADD_TODO, DELETE_TODO, CHECK_TODO, EDIT_TODO } from '../actions/index';
 
 const todoReducer = (state = [], action) => {
 	console.log('action', action);
@@ -28,6 +28,10 @@ const todoReducer = (state = [], action) => {
 					return 1;
 				}
 			}); // 체크된 항목이 뒤로 가도록 정렬
+
+		case EDIT_TODO:
+			state.filter((todo) => todo.id === action.id).map((todo) => (todo.text = action.text));
+			return state;
 
 		default:
 			return state;

@@ -77,7 +77,7 @@ export function Input() {
 	return (
 		<InputContainer>
 			<Label>
-				<TodoInput placeholder='Add a new task' type='text' value={inputText} onChange={handleInputChange} onKeyUp={handleInputChange} />
+				<TodoInput type='text' value={inputText} onChange={handleInputChange} onKeyUp={handleInputChange} />
 				<PlusButton onClick={addTodoList}>
 					<FontAwesomeIcon icon={faPlus} />
 				</PlusButton>

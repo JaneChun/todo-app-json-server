@@ -10,7 +10,6 @@ const TodosContainer = styled.div`
 
 export function TodoList() {
 	const state = useSelector((state) => state);
-	console.log('state in TodoList', state);
 	return (
 		<TodosContainer>
 			<ul>

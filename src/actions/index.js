@@ -1,6 +1,7 @@
 export const ADD_TODO = 'ADD_TODO';
 export const DELETE_TODO = 'DELETE_TODO';
 export const CHECK_TODO = 'CHANGE_CHECK';
+export const EDIT_TODO = 'EDIT_TODO';
 
 export const addTodo = ({ id, inputText }) => {
 	console.log('add id', id);
@@ -27,5 +28,15 @@ export const checkTodo = ({ id, checked }) => {
 		type: CHECK_TODO,
 		id: id,
 		checked: checked,
+	};
+};
+
+export const editTodo = ({ id, newText }) => {
+	console.log('edit id', id);
+	console.log('newText', newText);
+	return {
+		type: EDIT_TODO,
+		id: id,
+		text: newText,
 	};
 };

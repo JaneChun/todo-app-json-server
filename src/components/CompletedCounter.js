@@ -21,12 +21,16 @@ const Checkbox = styled.input`
 	background-color: #d9d9d9;
 `;
 
-const Text = styled.p`
+const Text = styled.div`
+	width: 100%;
 	margin-left: 13.25px;
+	margin-right: 25px;
 	color: #a8a8a8;
 
+	display: flex;
+	justify-content: space-between;
+
 	& span {
-		margin-right: 160px;
 	}
 `;
 

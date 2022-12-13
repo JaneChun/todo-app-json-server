@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMinus } from '@fortawesome/free-solid-svg-icons';
+import { faMinus, faPen } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { deleteTodo, checkTodo } from '../actions/index';
+import { deleteTodo, checkTodo, editTodo } from '../actions/index';
 
 const TodoContainer = styled.li`
 	background-color: white;
@@ -13,7 +13,8 @@ const TodoContainer = styled.li`
 	display: flex;
 	align-items: center;
 
-	.textAndIcon {
+	.textAndIcons {
+		/* background-color: skyblue; */
 		width: 250px;
 		display: flex;
 		justify-content: space-between;
@@ -40,12 +41,11 @@ const Checkbox = styled.input`
 		transition: 0.3s;
 	}
 `;
-const Text = styled.p`
+const Text = styled.div`
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	margin-left: 13.25px;
-	margin-right: 27px;
 	cursor: pointer;
 
 	&.open {
@@ -54,24 +54,52 @@ const Text = styled.p`
 	}
 `;
 
-const MinusButton = styled.button`
+const EditText = styled.input`
+	border: none;
+	font-size: 16px;
+	margin-left: 13.25px;
+	/* text-decoration: underline 1px solid; */
+`;
+
+const Icons = styled.div`
+	display: flex;
+`;
+
+const Button = styled.button`
 	color: transparent;
 	width: 30px;
 	font-size: 14px;
 	background: none;
 	border: none;
-	padding-right: 12px;
+	/* padding-right: 12px; */
 
 	cursor: pointer;
 `;
 
 export function Todo({ id, text }) {
 	const [isOpen, setIsOpen] = useState(false);
+	const [isEdit, setIsEdit] = useState(false);
+	const [newText, setNewText] = useState(text);
 	const dispatch = useDispatch();
 
 	// ✅ todo 삭제
 	const handleDelBtn = () => {
 		dispatch(deleteTodo({ id }));
+	};
+
+	// ✅ todo 수정
+	const handleEditBtn = () => {
+		setIsEdit(true);
+	};
+
+	const onChange = (e) => {
+		setNewText(e.target.value);
+
+		// 엔터 누르면 수정
+		if (e._reactName === 'onKeyUp' && e.code === 'Enter') {
+			dispatch(editTodo({ id, newText }));
+			setIsEdit(false);
+		}
 	};
 
 	const handleChkBox = (e) => {
@@ -86,13 +114,23 @@ export function Todo({ id, text }) {
 	return (
 		<TodoContainer>
 			<Checkbox onClick={handleChkBox} type='checkbox' />
-			<div className='textAndIcon'>
-				<Text className={isOpen ? 'open' : ''} onClick={handleToggle}>
-					{text}
-				</Text>
-				<MinusButton onClick={handleDelBtn}>
-					<FontAwesomeIcon icon={faMinus} />
-				</MinusButton>
+			<div className='textAndIcons'>
+				{isEdit ? (
+					<EditText value={newText} onChange={onChange} onKeyUp={onChange} type='text' />
+				) : (
+					<Text className={isOpen ? 'open' : ''} onClick={handleToggle}>
+						{newText || text}
+					</Text>
+				)}
+
+				<Icons>
+					<Button>
+						<FontAwesomeIcon icon={faPen} onClick={handleEditBtn} />
+					</Button>
+					<Button>
+						<FontAwesomeIcon icon={faMinus} onClick={handleDelBtn} />
+					</Button>
+				</Icons>
 			</div>
 		</TodoContainer>
 	);
