@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { addTodo } from '../actions/index';
+import axios from 'axios';
+import { URL } from './TodoList';
 
 const InputContainer = styled.div`
 	height: 61px;
@@ -51,10 +51,9 @@ const PlusButton = styled.button`
 	align-items: center;
 `;
 
-export function Input() {
+export function Input({todos, setTodos}) {
 	const [inputText, setInputText] = useState('');
 	const id = useRef(0); // useRef에 id 값 저장
-	const dispatch = useDispatch();
 
 	const handleInputChange = (e) => {
 		setInputText(e.target.value);
@@ -69,7 +68,16 @@ export function Input() {
 		if (inputText) {
 			// 텍스트 없으면 추가 X
 			id.current++; // ref 객체의 current 값을 1 증가시킨다.
-			dispatch(addTodo({ id, inputText })); // + 버튼 누르면 todoList 배열에 추가된다.
+
+			axios
+				.post(URL, {
+					"id": id.current,
+					"text": inputText,
+					"checked": false,
+				})
+				.then((res) => setTodos([res.data, ...todos])) // 응답받은 객체를 todos에 추가
+				.catch((err) => console.log(err));
+
 			setInputText('');
 		}
 	};

@@ -5,6 +5,7 @@ import { Input } from './components/Input.js';
 import { TodoList } from './components/TodoList.js';
 import { CompletedCounter } from './components/CompletedCounter.js';
 import { Today } from './components/Today.js';
+import { useState } from 'react';
 
 const Body = styled.div`
 	display: flex;
@@ -21,13 +22,15 @@ const AppContainer = styled.div`
 `;
 
 function App() {
+	
+	const [todos, setTodos] = useState([]);
 	return (
 		<Body>
 			<AppContainer>
 				<Title />
-				<Input />
-				<TodoList />
-				<CompletedCounter />
+				<Input todos={todos} setTodos={setTodos}/>
+				<TodoList todos={todos} setTodos={setTodos} />
+				<CompletedCounter todos={todos}/>
 				<Today />
 			</AppContainer>
 		</Body>

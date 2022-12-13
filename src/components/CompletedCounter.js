@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
-import { useSelector } from 'react-redux';
-
 const Counter = styled.div`
 	width: 100%;
 	height: 53px;
@@ -34,11 +32,10 @@ const Text = styled.div`
 	}
 `;
 
-export function CompletedCounter() {
-	const state = useSelector((state) => state);
-
+export function CompletedCounter({todos}) {
 	let counter = 0;
-	state.forEach((todo) => {
+	
+	todos.forEach((todo) => {
 		if (todo.checked) {
 			counter++;
 		}

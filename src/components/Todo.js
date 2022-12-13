@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPen } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { deleteTodo, checkTodo, editTodo } from '../actions/index';
+import axios from 'axios';
+import { URL } from './TodoList';
 
 const TodoContainer = styled.li`
 	background-color: white;
@@ -76,15 +76,19 @@ const Button = styled.button`
 	cursor: pointer;
 `;
 
-export function Todo({ id, text }) {
+export function Todo({ id, text, todos, setTodos }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isEdit, setIsEdit] = useState(false);
 	const [newText, setNewText] = useState(text);
-	const dispatch = useDispatch();
 
 	// ✅ todo 삭제
 	const handleDelBtn = () => {
-		dispatch(deleteTodo({ id }));
+		axios.delete(URL + `/${id}`)
+		.then((res) => {
+			const modifiedTodos = todos.filter((todo) => todo.id !== id);
+			setTodos(modifiedTodos);
+		})
+		.catch((err) => console.log(err));
 	};
 
 	// ✅ todo 수정
@@ -97,14 +101,28 @@ export function Todo({ id, text }) {
 
 		// 엔터 누르면 수정
 		if (e._reactName === 'onKeyUp' && e.code === 'Enter') {
-			dispatch(editTodo({ id, newText }));
+			// PATCH...
 			setIsEdit(false);
 		}
 	};
 
 	const handleChkBox = (e) => {
 		const checked = e.target.checked; // 체크 여부 true/false
-		dispatch(checkTodo({ id, checked }));
+		axios.patch(URL + `/${id}`, {
+			"checked": checked
+		})
+		.then((res) => {
+			const modifiedTodos = todos.map((todo) => todo.id === res.data.id ? res.data : todo)
+			modifiedTodos.sort((a, b) => {
+				if (a.checked === false) {
+					return -1;
+				} else {
+					return 1;
+				}
+			})
+			setTodos(modifiedTodos); // 응답받은 수정된 객체를 todos에 반영
+		})
+		.catch((err) => console.log(err));
 	};
 
 	const handleToggle = () => {
